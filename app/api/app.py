@@ -1,4 +1,5 @@
 import base64
+import io
 import json
 import boto3
 from PIL import Image
@@ -23,6 +24,10 @@ def image_upload(event, context):
         file_name = event["queryStringParameters"]["file_name"]
         image = event["body"]
         image = base64.b64decode(image)
+
+        # 画像をリサイズ
+        image = Image.open(io.BytesIO(image))
+        image = image.resize((100, 100))
 
         bucket.put_object(Key=file_name, Body=image)
 
