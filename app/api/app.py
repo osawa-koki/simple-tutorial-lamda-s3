@@ -21,11 +21,7 @@ def ping(event, context):
 def image_upload(event, context):
     try:
         file_name = event["queryStringParameters"]["file_name"]
-        image = base64.b64decode(event["body"]).decode("utf-8")
-
-        # 画像をリサイズ
-        image = Image.open(image)
-        image = image.resize((100, 100))
+        image = base64.b64decode(event["body"])
 
         bucket.put_object(Key=file_name, Body=image)
 
