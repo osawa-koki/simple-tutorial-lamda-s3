@@ -56,5 +56,22 @@ Resources:
     Metadata:
       Dockerfile: Dockerfile
       DockerContext: ./api
+
+  ImageDownloadFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      PackageType: Image
+      ImageConfig:
+        Command: [ "app.image_download" ]
+      Architectures:
+        - x86_64
+      Events:
+        HelloWorld:
+          Type: Api
+          Properties:
+            Path: /image/download
+            Method: get
+    Metadata:
+      Dockerfile: Dockerfile
+      DockerContext: ./api
       DockerTag: python3.9-v1
-      
