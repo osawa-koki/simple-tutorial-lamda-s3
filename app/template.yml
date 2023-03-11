@@ -10,6 +10,9 @@ Globals:
   Function:
     Timeout: 30
     MemorySize: 128
+  Api:
+    BinaryMediaTypes:
+      - "image/*"
 
 Resources:
   MyBucket:
