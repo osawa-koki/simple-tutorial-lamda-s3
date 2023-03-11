@@ -23,6 +23,7 @@ Resources:
   PingFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
+      FunctionName: !Sub ${AWS::StackName}-ping
       PackageType: Image
       ImageConfig:
         Command: [ "app.ping" ]
@@ -42,6 +43,7 @@ Resources:
   ImageUploadFunction:
     Type: AWS::Serverless::Function
     Properties:
+      FunctionName: !Sub ${AWS::StackName}-image-upload
       PackageType: Image
       ImageConfig:
         Command: [ "app.image_upload" ]
@@ -60,6 +62,7 @@ Resources:
   ImageDownloadFunction:
     Type: AWS::Serverless::Function
     Properties:
+      FunctionName: !Sub ${AWS::StackName}-image-download
       PackageType: Image
       ImageConfig:
         Command: [ "app.image_download" ]
