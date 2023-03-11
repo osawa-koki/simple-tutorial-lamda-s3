@@ -22,6 +22,7 @@ def image_upload(event, context):
     try:
         file_name = event["queryStringParameters"]["file_name"]
         image = event["body"]
+        image = base64.b64decode(image)
 
         bucket.put_object(Key=file_name, Body=image)
 
