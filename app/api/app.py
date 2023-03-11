@@ -65,4 +65,3 @@ def image_download(event, context):
                 'message': str(e),
             })
         }
-
