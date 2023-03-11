@@ -1,3 +1,4 @@
+import base64
 import json
 import boto3
 from PIL import Image
@@ -35,4 +36,20 @@ def image_upload(event, context):
                 "message": "image uploaded",
             }
         ),
+    }
+
+def image_download(event, context):
+
+    file_name = event["queryStringParameters"]["file_name"]
+
+    response = s3.get_object(
+        Bucket=bucket_name,
+        Key=file_name,
+    )
+    image = response['Body'].read()
+    return {
+        'headers': { "Content-Type": "image/png" },
+        'statusCode': 200,
+        'body': base64.b64encode(image).decode('utf-8'),
+        'isBase64Encoded': True
     }
