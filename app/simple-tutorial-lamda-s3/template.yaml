@@ -34,7 +34,7 @@ Resources:
             Method: get
     Metadata:
       Dockerfile: Dockerfile
-      DockerContext: ./hello_world
+      DockerContext: ./api
       DockerTag: python3.9-v1
 
 Outputs:
