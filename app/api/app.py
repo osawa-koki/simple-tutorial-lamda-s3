@@ -48,7 +48,6 @@ def image_upload(event, context):
         }
 
 def image_download(event, context):
-
     try:
         file_name = event["queryStringParameters"]["file_name"]
         response = bucket.Object(file_name).get()
