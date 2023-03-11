@@ -23,7 +23,7 @@ Resources:
   MyLambdaRole:
     Type: AWS::IAM::Role
     Properties:
-      RoleName: simple-dataset-generating-supporter-lambda-role
+      RoleName: simple-tutorial-lamda-s3-role
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -32,7 +32,7 @@ Resources:
               Service: lambda.amazonaws.com
             Action: sts:AssumeRole
       Policies:
-        - PolicyName: simple-dataset-generating-supporter-policy
+        - PolicyName: simple-tutorial-lamda-s3-role-policy
           PolicyDocument:
             Version: '2012-10-17'
             Statement:
