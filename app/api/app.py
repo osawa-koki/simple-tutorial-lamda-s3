@@ -19,37 +19,55 @@ def ping(event, context):
     }
 
 def image_upload(event, context):
+    try:
+        file_name = event["queryStringParameters"]["file_name"]
+        image = event["body"]
 
-    file_name = event["queryStringParameters"]["file_name"]
-    image = event["body"]
+        # 画像をリサイズ
+        image = Image.open(image)
+        image = image.resize((100, 100))
 
-    # 画像をリサイズ
-    image = Image.open(image)
-    image = image.resize((100, 100))
+        bucket.put_object(Key=file_name, Body=image)
 
-    bucket.put_object(Key=file_name, Body=image)
-
-    return {
-        "statusCode": 200,
-        "body": json.dumps(
-            {
-                "message": "image uploaded",
-            }
-        ),
-    }
+        return {
+            "statusCode": 200,
+            "body": json.dumps(
+                {
+                    "message": "image uploaded",
+                }
+            ),
+        }
+    except Exception as e:
+        return {
+            "statusCode": 400,
+            "body": json.dumps(
+                {
+                    "message": str(e),
+                }
+            ),
+        }
 
 def image_download(event, context):
 
-    file_name = event["queryStringParameters"]["file_name"]
+    try:
+        file_name = event["queryStringParameters"]["file_name"]
 
-    response = s3.get_object(
+        response = s3.get_object(
         Bucket=bucket_name,
         Key=file_name,
-    )
-    image = response['Body'].read()
-    return {
-        'headers': { "Content-Type": "image/png" },
-        'statusCode': 200,
-        'body': base64.b64encode(image).decode('utf-8'),
-        'isBase64Encoded': True
-    }
+        )
+        image = response['Body'].read()
+        return {
+            'headers': { "Content-Type": "image/png" },
+            'statusCode': 200,
+            'body': base64.b64encode(image).decode('utf-8'),
+            'isBase64Encoded': True,
+        }
+    except Exception as e:
+        return {
+            'statusCode': 400,
+            'body': json.dumps({
+                'message': str(e),
+            })
+        }
+
