@@ -58,7 +58,7 @@ def image_download(event, context):
             'headers': { "Content-Type": "image/png" },
             'statusCode': 200,
             'body': image,
-            'isBase64Encoded': True,
+            'isBase64Encoded': False,
         }
     except Exception as e:
         return {
