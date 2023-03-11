@@ -52,10 +52,7 @@ def image_download(event, context):
     try:
         file_name = event["queryStringParameters"]["file_name"]
 
-        response = s3.get_object(
-        Bucket=bucket_name,
-        Key=file_name,
-        )
+        response = bucket.Object(file_name).get()
         image = response['Body'].read()
         return {
             'headers': { "Content-Type": "image/png" },
