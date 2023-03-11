@@ -1,0 +1,39 @@
+name: CI/CD
+
+on:
+  push:
+    branches:
+      - main
+      - develop # 一時的に追加
+
+env:
+  project_name: simple-tutorial-lamda-s3
+  working_directory: ./app
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: 3.9
+      - uses: aws-actions/setup-sam@v2
+      - uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+      - run: sam build --use-container
+        working-directory: ${{ env.working_directory }}
+      - name: Deploy Lambda
+        run: |
+          aws s3 ls s3://${{ env.project_name }} || aws s3 mb s3://${{ env.project_name }}
+          sam deploy \
+            --no-confirm-changeset \
+            --no-fail-on-empty-changeset \
+            --resolve-image-repos \
+            --stack-name ${{ env.project_name }} \
+            --s3-bucket ${{ env.project_name }} \
+            --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM
+        working-directory: ${{ env.working_directory }}
