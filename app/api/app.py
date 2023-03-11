@@ -51,7 +51,6 @@ def image_download(event, context):
 
     try:
         file_name = event["queryStringParameters"]["file_name"]
-
         response = bucket.Object(file_name).get()
         image = response['Body'].read()
         return {
